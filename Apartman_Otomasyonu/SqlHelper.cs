@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Apartman_Otomasyonu
 {
-    
+
 
     internal class SqlHelper
     {
@@ -16,8 +17,9 @@ namespace Apartman_Otomasyonu
 
         public SqlHelper()
         {
-            Connection = new SqlConnection();
             ConnectionString = @"Data Source =MFE\SQLEXPRESS;initial Catalog =APARTMAN;Integrated Security=True";
+            Connection = new SqlConnection(ConnectionString);
+            
         }
 
         public void ExecuteProc(string procName, params SqlParameter[] ps)
@@ -32,5 +34,13 @@ namespace Apartman_Otomasyonu
             Connection.Close();
         }
 
+        public DataTable GetTable(string query)
+        {
+            SqlDataAdapter adapter = new SqlDataAdapter(query,ConnectionString);
+            DataTable dt = new DataTable();
+            adapter.Fill(dt);
+            return dt;
+
+        }
     }
 }
